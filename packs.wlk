@@ -40,7 +40,7 @@ class PackInternacional inherits Pack {
     method noEsDeInteres() {esDeInteres = false}
     
     override method costoFinal() = super() * 1.2
-    override method esPremium() = esDeInteres and duracion > 20 and cantEscalas == 0
+    override method esPremium() = self.esDeInteres() and duracion > 20 and cantEscalas == 0
 }
 
 class PackProvincial inherits PackNacional {
@@ -50,7 +50,7 @@ class PackProvincial inherits PackNacional {
 // Los roles validos: "Guia", "AsistenteLog" "Acompañante"
 class Coordinador {
     const cantidadDeViajes
-    var property estaMotivado
+    const property estaMotivado
     const property aniosDeExperiencia
     var rolActual
     const property rolesValidos = #{guia, asistenteLogistico, acompañante}
