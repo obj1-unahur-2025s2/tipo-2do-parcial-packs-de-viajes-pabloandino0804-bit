@@ -3,12 +3,12 @@
 class Pack {
     const property duracion 
     const property precioBase
-    const property beneficios = []
+    const property beneficios
     var property coordinador
 
     method esPaquete(unTipo) = self == unTipo
 
-    method beneficiosVigentes() = beneficios.filter({beneficio => beneficio.esVigente()})
+    method beneficiosVigentes() = beneficios.filter({beneficio => beneficio.estaVigente()})
 
     method costoFinal() = precioBase + self.beneficiosVigentes().sum({beneficio => beneficio.costo()})
 
@@ -17,7 +17,7 @@ class Pack {
 
 class PackNacional inherits Pack {
     var property provincia
-    const actividades = []
+    const actividades
 
     method actividades() = actividades
     override method esPremium() = duracion > 10 and coordinador.esAltamenteCalificado()

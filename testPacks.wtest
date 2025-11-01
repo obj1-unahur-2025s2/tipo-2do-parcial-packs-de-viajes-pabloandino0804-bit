@@ -4,8 +4,8 @@ import packs.*
 describe "Etapa 1" {
     const pepe = new Coordinador(cantidadDeViajes = 19, estaMotivado = false, aniosDeExperiencia = 0, rolActual = acompañante)
 
-    const packNacional = new PackNacional(duracion = 15, precioBase = 10000, beneficios = #{}, coordinador = pepe, provincia = "Cordoba")
-    const packInternacional = new PackInternacional(duracion = 20, precioBase = 12000, )
+    const packNacional = new PackNacional(duracion = 15, precioBase = 10000, beneficios = #{}, coordinador = pepe, provincia = "Cordoba", actividades = #{})
+    const packInternacional = new PackInternacional(duracion = 20, precioBase = 12000, beneficios = #{}, coordinador = pepe, destino = "Mexico", cantEscalas = 5, esDeInteres = true)
     const benef1 = new Beneficio(tipo = "Traslados privados", costo = 500, estaVigente = true)
     const benef2 = new Beneficio(tipo = "Aceeso a salas VIP", costo = 400, estaVigente = true)
     test "Un pack nacional sin beneficios vigentes devuelve el mismo precio base." {
@@ -19,6 +19,7 @@ describe "Etapa 1" {
     }
 
     test "Un pack internacional sin beneficios vigentes calcula correctamente el total con el 20% de recargo." {
-        assert.equals(12000,packInternacional.costoFinal())
+        assert.equals(14400,packInternacional.costoFinal())
     }
 }
+
