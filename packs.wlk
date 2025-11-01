@@ -75,7 +75,7 @@ object guia {
 }
 
 object asistenteLogistico {
-    method condicionAdicional(coordinador) = coordinador.aniosDeExperiencia() <= 3
+    method condicionAdicional(coordinador) = coordinador.aniosDeExperiencia() >= 3
 }
 
 object acompañante {

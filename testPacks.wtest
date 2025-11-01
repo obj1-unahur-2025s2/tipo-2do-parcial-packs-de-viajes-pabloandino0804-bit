@@ -25,7 +25,7 @@ describe "Etapa 1" {
 
 describe "Etapa 2" {
     const guia = new Coordinador(cantidadDeViajes = 21, estaMotivado = true, aniosDeExperiencia = 0, rolActual = guia)
-    const asistente = (cantidadDeViajes = 21, estaMotivado = true, aniosDeExperiencia = 2, rolActual = asistente)
+    const asistente = new Coordinador(cantidadDeViajes = 21, estaMotivado = true, aniosDeExperiencia = 2, rolActual = asistente)
     test "Un guía motivado con 21 viajes realizados es considerado altamente calificado." {
         assert.that(guia.esAltamenteCalificado())
     }
