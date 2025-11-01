@@ -1,72 +1,92 @@
 // completar
 // Paquetes
 class Pack {
-    const duracion 
-    const precioBase
-    const beneficios
-    const coordinador
+    const property duracion 
+    const property precioBase
+    const property beneficios = []
+    var property coordinador
 
-    method duracion() = duracion
+    method esPaquete(unTipo) = self == unTipo
 
-    method precioBase() = precioBase
+    method beneficiosVigentes() = beneficios.filter({beneficio => beneficio.esVigente()})
 
-    method beneficios() = beneficios
+    method costoFinal() = precioBase + self.beneficiosVigentes().sum({beneficio => beneficio.costo()})
 
-    method coordinador() = coordinador
+    method esPremium()
 }
 
-class Nacional inherits Pack {
-    const provinciaDestino
-    const actvIncluidas
+class PackNacional inherits Pack {
+    var property provincia
+    const actividades = []
 
-    method provinciaDestino() = provinciaDestino
-
-    method actVIncluidas() = actvIncluidas
+    method actividades() = actividades
+    override method esPremium() = duracion > 10 and coordinador.esAltamenteCalificado()
 }
 
-class Internacional inherits Pack {
-    const paisDestino
-    const cantEscalas
-    const esLugarDeInteres
-
-    method paisDestino() = paisDestino
+class PackInternacional inherits Pack {
+    var property destino
+    var cantEscalas
+    var esDeInteres
 
     method cantEscalas() = cantEscalas
+    method esDeInteres() = esDeInteres
 
-    method esLugarDeInteres() = esLugarDeInteres
+    method aumentarEscalas(unNumero) {cantEscalas += unNumero}
+
+    method decrementarEscalas(unNumero) {cantEscalas -= unNumero}
+
+    method siEsDeInteres() {esDeInteres = true}
+
+    method noEsDeInteres() {esDeInteres = false}
+    
+    override method costoFinal() = super() * 1.2
+    override method esPremium() = esDeInteres and duracion > 20 and cantEscalas == 0
 }
 
+class PackProvincial inherits PackNacional {
+    const property ciudadesAVisitar
+}
 // Coordinadores
 // Los roles validos: "Guia", "AsistenteLog" "Acompañante"
 class Coordinador {
-    const viajesRealizados
-    const estaMotivado
-    const aniosDeExperiencia
+    const cantidadDeViajes
+    var property estaMotivado
+    const property aniosDeExperiencia
     var rolActual
+    const property rolesValidos = #{guia, asistenteLogistico, acompañante}
 
-    method viajesRealizados() = viajesRealizados
-    method estaMotivado() = estaMotivado
-    method aniosDeExperiencia() = aniosDeExperiencia
+    method cantidadDeViajes() = cantidadDeViajes
     method rolActual() = rolActual
 
-    method cambiarDeRol(unRol) {
-        const rolesValidos = #{"Guia", "AsitenteLogicistico", "Acomáñante"}
+    method cambiarRol(unRol) {    
         if (!rolesValidos.contains(unRol)) {
-            self.error("La clase dada no es valida")
+            self.error("Rol invalido")
         }
         else {
             rolActual = unRol
         }
     }
+    
+    method esAltamenteCalificado() = cantidadDeViajes > 20 and rolActual.condicionAdicional(self)
 }
 
+object guia {
+    method condicionAdicional(coordinador) = coordinador.estaMotivado()
+}
 
+object asistenteLogistico {
+    method condicionAdicional(coordinador) = coordinador.aniosDeExperiencia() <= 3
+}
+
+object acompañante {
+    method condicionAdicional(coordinador) = true
+}
+
+// Beneficios especiales
 class Beneficio {
     const tipo
-    const costo
-    const estaVigente
+    const property costo
+    var property estaVigente
 
     method tipo() = tipo
-    method costo() = costo
-    method estaVigente() = estaVigente
 }
