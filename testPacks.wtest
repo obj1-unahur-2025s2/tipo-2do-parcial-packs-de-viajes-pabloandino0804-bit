@@ -6,14 +6,15 @@ describe "Pruebas de Etapa 1" {
     const packNacional = new PackNacional(duracion = 15, precioBase = 10000, beneficios = #{}, coordinador = pepe, provincia = "Cordoba", actividades = #{})
     const packInternacional = new PackInternacional(duracion = 20, precioBase = 12000, beneficios = #{}, coordinador = pepe, destino = "Mexico", cantEscalas = 5, esDeInteres = true)
     const benef1 = new Beneficio(tipo = "Traslados privados", costo = 500, estaVigente = true)
+    const benef2 = new Beneficio(tipo = "Acceso Vip", costo = 400, estaVigente = true)
     test "Un pack nacional sin beneficios vigentes devuelve el mismo precio base." {
         assert.equals(10000,packNacional.costoFinal())
     }
 
     test "Un pack nacional con 2 beneficios vigentes suma correctamente sus costos al precio base." {
         packNacional.beneficios().add(benef1)
-        packNacional.beneficios().add(benef1)
-        assert.equals(10500,packNacional.costoFinal())
+        packNacional.beneficios().add(benef2)
+        assert.equals(10900,packNacional.costoFinal())
     }
 
     test "Un pack internacional sin beneficios vigentes calcula correctamente el total con el 20% de recargo." {
@@ -39,7 +40,7 @@ describe "Pruebas de Etapa 2" {
     }
 }
 
-describe "Pruebas de Etapa 3"{
+describe "Pruebas de Etapa 3" {
     const unGuia = new Coordinador(cantidadDeViajes = 21, estaMotivado = true, aniosDeExperiencia = 0, rolActual = guia)
     const paquete1 = new PackNacional(duracion = 14, precioBase = 10000, beneficios = #{}, coordinador = unGuia, provincia = "Cordoba", actividades = #{})
     const paquete2 = new PackInternacional(duracion = 25, precioBase = 12000, beneficios = #{}, coordinador = unGuia, destino = "Mexico", cantEscalas = 0, esDeInteres = true)
@@ -50,5 +51,22 @@ describe "Pruebas de Etapa 3"{
 
     test "Pack internacional premium" {
         assert.that(paquete2.esPremium())
+    }
+}
+
+describe "Pruebas de Etapa 4" {
+    const pepe = new Coordinador(cantidadDeViajes = 19, estaMotivado = false, aniosDeExperiencia = 0, rolActual = acompañante)
+    const benef1 = new Beneficio(tipo = "Traslados privados", costo = 500, estaVigente = true)
+    const benef2 = new Beneficio(tipo = "Acceso Vip", costo = 400, estaVigente = true)
+    const benef3 = new Beneficio(tipo = "Seguros adicionales", costo = 7000, estaVigente = true)
+    const bTraslado = new Beneficio(tipo = "Traslados privados", costo = 2100, estaVigente = true)
+    const packProvincial = new PackProvincial(duracion = 14, precioBase = 10000, beneficios = #{bTraslado, benef1, benef2, benef3}, coordinador = pepe, provincia = "Cordoba", actividades = #{"1", "2", "3", "4", "5"}, ciudadesAVisitar = 7)
+    
+    test "pack provincial premium" {
+        assert.that(packProvincial.esPremium())
+    }
+
+    test "Costo final de pack provincial" {
+        assert.equals(30000, packProvincial.costoFinal())
     }
 }

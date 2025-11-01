@@ -45,9 +45,17 @@ class PackInternacional inherits Pack {
 
 class PackProvincial inherits PackNacional {
     const property ciudadesAVisitar
+
+    override method costoFinal() = super() * self.precioExtra()
+
+    method precioExtra() {
+        return if (self.esPremium()) 1.5 else 1
+    }
+
+    override method esPremium() = actividades.size() >= 4 and ciudadesAVisitar > 5 and self.beneficiosVigentes().size() >= 3
 }
+
 // Coordinadores
-// Los roles validos: "Guia", "AsistenteLog" "Acompañante"
 class Coordinador {
     const cantidadDeViajes
     const property estaMotivado
